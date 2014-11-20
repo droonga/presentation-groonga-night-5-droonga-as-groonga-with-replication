@@ -1,0 +1,21 @@
+---
+id: droonga-as-groonga-with-replication
+base_name: droonga-as-groonga-with-replication
+tags:
+- droonga
+- groonga
+presentation_date: 2014/11/29
+version: 2014.11.29
+licenses: []
+slideshare_id: droonga-as-groonga-with-replication 
+speaker_deck_id: 
+ustream_id: 
+vimeo_id: 
+youtube_id: 
+author:
+  markup_language: :markdown
+  name: 結城洋志
+  email: yuki@clear-code.com
+  rubygems_user: Piro
+  slideshare_user: pirooutsiderreflex
+  speaker_deck_user: 
