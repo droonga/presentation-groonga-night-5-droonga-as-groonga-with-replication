@@ -17,11 +17,20 @@ allotted_time
 theme
 :   groonga
 
+# Droongaって？
+
+*D*istributed G*roonga*
+
 # 要旨
 
  * 1年間の*進捗報告*
  * *「分散Groonga」としての
    Droongaの現状*の紹介
+
+# Part1
+
+1年間の
+*進捗報告*
 
 # 昨年からの進捗
 
@@ -38,7 +47,7 @@ theme
  * （当時の）現状
  * （当時の）今後の予定
 
-# 要するに
+# 大まかに言って
 
 *汎用の*分散型
 データ処理エンジンとして
@@ -49,7 +58,7 @@ theme
 
 という話が主
 
-# 要するに
+# 大まかに言って
 
 *今、こう使えます*
 という話は
@@ -57,24 +66,48 @@ theme
 
 # なんで？
 
- * 設計を熟知した職人が
- * *具体的な用途に応じて*
-   最適な構成を考え
- * 丁寧な手作業でひとつひとつ
-   セットアップ＆設定を手作り
-
-（用途→「ログ保存＆検索用」
-　「掲示板のバックエンド用」など）
-
-# つまり
-
+ * どっちかというと
+   *フレームワーク的*な物だった
  * *プリミティブすぎ*て
-   具体的な実用形態に
-   結びつけるまでが大変
- * *具体的な用途*をユーザが
+   具体的な実用形態が遠い
+ * *具体的な用途*を先に
    決めないと話が始まらない
- * 開発側も*開発リソースの
-   注ぎ込み所*を絞れない
+
+# ハードル高すぎ
+
+![](images/parts.jpg){:relative_height="95"}
+
+# しかも
+
+ * 設計を*熟知*した人が
+ * 用途ごとの*最適な構成*を考え
+   * ログ保存＆検索用？
+   * 掲示板のバックエンド用？
+ * 丁寧な*手作業*でひとつひとつ
+   セットアップ＆設定
+
+# 職人芸
+
+![](images/syokunin.jpg){:relative_height="95"}
+
+# ユーザにとって
+
+ * 誰でも*気軽に*利用できる
+   ようにはなっていなかった
+
+# 開発者にとって
+
+ * *やらなきゃいけない事*が
+   膨大すぎ＆どんどん増える
+   * 作業を進める度に
+     *「あ、これもやっとかなきゃ」*
+     と課題が明らかになってくる
+ * *どこから手を着ければいいのか*
+   分からない
+
+# 人、それを炎上と云う
+
+![](images/firefighter.jpg){:relative_height="95"}
 
 # 方針転換
 
@@ -83,34 +116,161 @@ theme
  * その用途で使おうとした時の
    *躓きポイント*を潰していく
 
-# あれから1年
+# 何に使いたい？
 
-*レプリケーションできるGroonga*
-という用途を想定して
+とりあえず
+*分散対応の
+Groonga*
+として使いたい
 
- * Groongaとの互換性を向上
- * インストール＆
-   セットアップを簡便化
- * 管理コマンドや
-   ユーティリティを整備
+# なら、やるべき事は明確
+
+ * *Groongaとの互換性*を向上
+ * *簡単インストール＆
+   セットアップ*を実現
+ * ユーティリティの整備により
+   *簡単クラスタ管理*を実現
 
 # その過程で
 
- * オーケストレーションを導入
+ * *オーケストレーション*導入
    （based on Serf）
    * 一部のノードが死んでも
      クラスタとして動作し続ける
- * 検索処理の最適化が進んだ
+ * 検索処理の最適化
 
-# 結果
+# 結果（現状）
 
-そこそこ使える
-ようになってきた！
+*レプリケーション
+できるGroonga*
+としてそこそこ
+形になってきた！
 
-# TBD
 
- * セットアップの手順紹介
- * Groongaと全く同じ感じに使える事を協調
- * 性能の比較、ベンチマーク結果
- * 今後の予定、展望
+# Part2
+
+*「分散Groonga」*
+としての
+Droongaの紹介
+
+# 特徴
+
+特徴
+
+# Groonga互換
+
+![](images/groonga-vs-droonga-compatible-http.png){:relative_height='95'}
+
+# データベースを分散
+
+ * *レプリケーション*
+   * 現在の開発はここに注力
+ * *パーティショニング*
+   * 現在は部分的に対応（これから改善）
+
+# レプリケーション
+
+![](images/replication-write.png){:relative_width="35" align="left" relative_margin_left="-20"}
+
+![](images/replication-read.png){:relative_width="45" align="right"}
+
+# レプリケーションの利点(1)
+
+![](images/replication-write.png "データが自動的に複製される"){:relative_height='90'}
+
+# レプリケーションの利点(1)
+
+![](images/replication-read-dead.png "耐障害性が高くなる"){:relative_height='90'}
+
+# レプリケーションの利点(1)
+
+![](images/service-droonga-dead.png "障害があってもサービスを
+提供し続けられる"){:relative_height='90'}
+
+# レプリケーションの利点(2)
+
+![](images/replication-read.png "負荷が分散される"){:relative_height='90'}
+
+# レプリケーションの利点(2)
+
+![](images/service-droonga-overload.png "負荷の増大に対応しやすい"){:relative_height='90'}
+
+
+# ノードのセットアップ
+
+専用のスクリプトを使用
+（Ubuntu、CentOS7のみ対応）
+
+    # curl \
+        https://raw.githubusercontent.com/droonga/droonga-engine/master/install.sh | \
+        bash
+    # curl \
+        https://raw.githubusercontent.com/droonga/droonga-http-server/master/install.sh | \
+        bash
+
+# サービスの起動
+
+serviceコマンドを使用
+
+    # service droonga-engine start
+    # service droonga-http-server start
+
+# サービスの終了
+
+serviceコマンドを使用
+
+    # service droonga-engine stop
+    # service droonga-http-server stop
+
+# クラスタへのノード追加
+
+    % droonga-engine-join --host=cccc \
+                          --replica-source-host=bbbb
+
+![](images/join.png){:relative_height='100'}
+
+# ノードの切り離し
+
+    % droonga-engine-unjoin --host=cccc
+
+![](images/unjoin.png){:relative_height='100'}
+
+# やってみよう
+
+ * ノードをセットアップ
+ * サービスを起動
+ * ノードをクラスタに追加
+ * Groongaのselectコマンドで
+   全文検索
+
+# Groongaとの性能比較
+
+グラフを入れる
+
+
+# これからのDroonga
+
+ * *Suggest*対応
+ * 完全*無停止*での
+   ノード追加を可能にしたい
+ * *パーティショニング*も混ぜた
+   複雑な構成への対応
+
+# 株式会社クリアコード
+
+ * Groonga有償サポート
+ * Mozilla有償サポート
+
+
+# おわり
+
+*Droonga, Groonga, 
+株式会社クリアコード*を宜しく
+お願いします
+
+使用画像
+
+ * [写真素材 足成：秋葉原](http://www.ashinari.com/2009/07/12-024265.php)
+ * [職人のおじいちゃん by Neil_Scottuk](http://free-photos.gatag.net/2014/07/06/100000.html)
+ * [フリー画像・写真素材集 GATAG](http://free-photos.gatag.net/2014/11/10/170000.html)
 
