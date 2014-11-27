@@ -196,9 +196,44 @@ Droongaの紹介
 ![](images/service-droonga-overload.png "負荷の増大に対応しやすい"){:relative_height='90'}
 
 
+# 実際の性能は？
+
+Groonga v.s. Droonga
+ベンチマーク
+
+ * Wikipedia日本語版
+   *150万ページ*
+ * *全文検索*＋*ドリルダウン*
+ * キャッシュヒット率50％
+
+# 実際の性能：スループット
+
+（グラフ）
+
+
+# 実際の性能：レイテンシー
+
+（グラフ）
+
+
+# 性能の傾向
+
+ * 条件次第では
+   *ほとんど性能劣化無し*！
+ * ノード追加で
+   *スループットの上限UP*！
+
+# 試してみよう
+
+ * ノードをセットアップ
+ * サービスを起動
+ * Groongaのselectコマンドで
+   全文検索
+ * クラスタにノードを追加
+
 # ノードのセットアップ
 
-専用のスクリプトを使用
+インストールスクリプト
 （Ubuntu、CentOS7のみ対応）
 
     # curl \
@@ -222,6 +257,13 @@ serviceコマンドを使用
     # service droonga-engine stop
     # service droonga-http-server stop
 
+# 検索とか
+
+GroongaのHTTPインターフェースと
+互換性あり
+
+    curl "http://hostname:10041/d/select?..."
+
 # クラスタへのノード追加
 
     % droonga-engine-join --host=cccc \
@@ -235,26 +277,15 @@ serviceコマンドを使用
 
 ![](images/unjoin.png){:relative_height='100'}
 
-# やってみよう
-
- * ノードをセットアップ
- * サービスを起動
- * ノードをクラスタに追加
- * Groongaのselectコマンドで
-   全文検索
-
-# Groongaとの性能比較
-
-グラフを入れる
-
 
 # これからのDroonga
 
- * *Suggest*対応
- * 完全*無停止*での
-   ノード追加を可能にしたい
- * *パーティショニング*も混ぜた
-   複雑な構成への対応
+ * Groongaとの互換性向上
+   * *Suggest*対応
+ * 分散対応の改善
+   * 完全*無停止*でのクラスタ構成変更
+   * *パーティショニング*有りの構成
+   * *プラグイン開発*をより容易に
 
 # 株式会社クリアコード
 
@@ -265,12 +296,11 @@ serviceコマンドを使用
 # おわり
 
 *Droonga, Groonga, 
-株式会社クリアコード*を宜しく
-お願いします
+株式会社クリアコード*
+を宜しくお願いします
 
-使用画像
-
- * [写真素材 足成：秋葉原](http://www.ashinari.com/2009/07/12-024265.php)
- * [職人のおじいちゃん by Neil_Scottuk](http://free-photos.gatag.net/2014/07/06/100000.html)
- * [フリー画像・写真素材集 GATAG](http://free-photos.gatag.net/2014/11/10/170000.html)
+ * 使用画像
+   * [写真素材 足成：秋葉原](http://www.ashinari.com/2009/07/12-024265.php)
+   * [職人のおじいちゃん by Neil_Scottuk](http://free-photos.gatag.net/2014/07/06/100000.html)
+   * [フリー画像・写真素材集 GATAG](http://free-photos.gatag.net/2014/11/10/170000.html)
 
