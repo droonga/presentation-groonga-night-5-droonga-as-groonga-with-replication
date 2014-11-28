@@ -27,6 +27,27 @@ theme
  * *「分散Groonga」としての
    Droongaの現状*の紹介
 
+# ちょっと待って！
+
+ * *分散Groonga*ってどゆこと？
+ * *分散データ処理エンジン*
+   じゃなかったの？
+
+# 今日の話は
+
+ * 分散型データ処理エンジン
+   *「Droonga」*の
+ * 組み込みプラグインの1つ
+   *「Groongaプラグイン」*
+
+にフォーカスした話です
+
+
+
+# Part1
+
+Part1
+
 # Part1
 
 1年間の
@@ -93,7 +114,7 @@ theme
 # ユーザにとって
 
  * 誰でも*気軽に*利用できる
-   ようにはなっていなかった
+   ものではなかった
 
 # 開発者にとって
 
@@ -109,21 +130,23 @@ theme
 
 ![](images/firefighter.jpg){:relative_height="95"}
 
-# 方針転換
+# 当座の目標の設定
 
  * Droonga側である程度
    *典型的な用途*を想定する
  * その用途で使おうとした時の
    *躓きポイント*を潰していく
+   * その過程で汎用分散データ処理
+     エンジンとしての基盤も整備される
 
 # 何に使いたい？
 
-とりあえず
 *分散対応の
 Groonga*
-として使いたい
+が欲しい人は
+それなりにいそう
 
-# なら、やるべき事は明確
+# やるべき事が明確に
 
  * *Groongaとの互換性*を向上
  * *簡単インストール＆
@@ -144,8 +167,12 @@ Groonga*
 *レプリケーション
 できるGroonga*
 としてそこそこ
-形になってきた！
+形になってきた
 
+
+# Part2
+
+Part2
 
 # Part2
 
@@ -174,26 +201,16 @@ Droongaの紹介
 
 ![](images/replication-read.png){:relative_width="45" align="right"}
 
-# レプリケーションの利点(1)
+システムの冗長性や
+耐障害性を高める
 
-![](images/replication-write.png "データが自動的に複製される"){:relative_height='90'}
+# パーティショニング
 
-# レプリケーションの利点(1)
+![](images/partition-write.png){:relative_width="40" align="left" relative_margin_left="-20"}
 
-![](images/replication-read-dead.png "耐障害性が高くなる"){:relative_height='90'}
+![](images/partition-read.png){:relative_width="50" align="right"}
 
-# レプリケーションの利点(1)
-
-![](images/service-droonga-dead.png "障害があってもサービスを
-提供し続けられる"){:relative_height='90'}
-
-# レプリケーションの利点(2)
-
-![](images/replication-read.png "負荷が分散される"){:relative_height='90'}
-
-# レプリケーションの利点(2)
-
-![](images/service-droonga-overload.png "負荷の増大に対応しやすい"){:relative_height='90'}
+より多くの量のデータを管理できる
 
 
 # 実際の性能は？
@@ -205,30 +222,64 @@ Groonga v.s. Droonga
    *150万ページ*
  * *全文検索*＋*ドリルダウン*
  * キャッシュヒット率50％
+ * [詳細はリポジトリを参照](https://github.com/droonga/presentation-groonga-night-5-droonga-as-groonga-with-replication/tree/master/benchmark)
 
-# 実際の性能：スループット
+# スループットの比較
 
-（グラフ）
+![](images/throughput.png){:relative_height='95'}
 
+# レイテンシーの比較
 
-# 実際の性能：レイテンシー
-
-（グラフ）
-
+![](images/latency.png){:relative_height='95'}
 
 # 性能の傾向
 
- * 条件次第では
-   *ほとんど性能劣化無し*！
- * ノード追加で
-   *スループットの上限UP*！
+ * Groongaと比べて
+   *ほとんど性能劣化無し*
+   （条件次第だけど）
+ * ノード追加で*Groongaの
+   性能上の限界*を超えられる
+   * *スループットの上限が上がる*
+   * *レイテンシーの低下が軽減される*
+
+# これからのDroonga
+
+ * Groongaとの互換性向上
+   * *Suggest*対応
+ * 汎用の分散データ処理エンジン
+   としての改善
+   * 完全*無停止*でのクラスタ構成変更
+   * *パーティショニング*有りの構成
+   * *プラグイン開発*をより容易に
+
+
+# まとめ
+
+まとめ
+
+# まとめ
+
+ * Droongaは*汎用の
+   分散型データ処理エンジン*
+ * 組み込みのプラグインによって
+   *レプリケーションできる
+   Groonga*として使える
+
+
+
 
 # 試してみよう
 
- * ノードをセットアップ
- * サービスを起動
- * Groongaのselectコマンドで
-   全文検索
+Droongaを
+試してみよう
+
+# 試してみよう
+
+ * インストールと起動
+ * Groongaからのデータ移行
+ * Groongaアプリケーションの
+   バックエンドを
+   Droongaに切り替え
  * クラスタにノードを追加
 
 # ノードのセットアップ
@@ -257,12 +308,32 @@ serviceコマンドを使用
     # service droonga-engine stop
     # service droonga-http-server stop
 
-# 検索とか
+# データの移行
+
+    % sudo gem install rroonga grn2drn droonga-client
+
+    % grndump --no-dump-tables /path/to/groonga/db | \
+          grn2drn | \
+          droonga-send --server=node0 \
+                       --report-throughput)
+    % grndump --no-dump-schema --no-dump-indexes \
+              /path/to/groonga/db | \
+          grn2drn | \
+          droonga-send --server=node0 \
+                       --server=node1 \
+                       --server=node2 \
+                       ...
+                       --report-throughput)
+
+# アプリケーションの移行
 
 GroongaのHTTPインターフェースと
 互換性あり
 
     curl "http://hostname:10041/d/select?..."
+
+アプリケーションは接続先を
+Droongaに変えるだけでOK
 
 # クラスタへのノード追加
 
@@ -278,20 +349,43 @@ GroongaのHTTPインターフェースと
 ![](images/unjoin.png){:relative_height='100'}
 
 
-# これからのDroonga
 
- * Groongaとの互換性向上
-   * *Suggest*対応
- * 分散対応の改善
-   * 完全*無停止*でのクラスタ構成変更
-   * *パーティショニング*有りの構成
-   * *プラグイン開発*をより容易に
+
+# 再度まとめ
+
+ * Droongaは*汎用の
+   分散型データ処理エンジン*
+ * 組み込みのプラグインによって
+   *レプリケーションできる
+   Groonga*として使える
+ * HTTPインターフェースは
+   *Groongaと互換性有り*
+
+
+
+# 宣伝
+
+宣伝
 
 # 株式会社クリアコード
 
- * Groonga有償サポート
+ * *Groonga有償サポート*
+   * Groonga以外のGroonga族も
  * Mozilla有償サポート
+   * Firefox, Thunderbird, Firefox OS
+ * その他OSS開発全般
+ * *コードリーダー育成支援*
 
+# 個人の活動
+
+*日経Linux*誌にて
+
+シェルスクリプト
+解説マンガ
+*「#!シス管系女子」*
+こっそり連載中
+
+![](images/syskan.jpg){:relative_width="30" align="right" relative_margin_right="-10"}
 
 # おわり
 
