@@ -35,7 +35,7 @@
  * node3
    * OS: Ubuntu 14.04LTS
    * CPU: Intel Core i5-4300U vPro 1.90GHz
-   * Memory: 8GB
+   * Memory: 4GB
 
 ## 手順
 
