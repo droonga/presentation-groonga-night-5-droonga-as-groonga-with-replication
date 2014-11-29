@@ -27,21 +27,18 @@ theme
  * *「分散Groonga」としての
    Droongaの現状*の紹介
 
-# ちょっと待って！
+# 今日話すこと
 
- * *分散Groonga*ってどゆこと？
- * *分散データ処理エンジン*
-   じゃなかったの？
+ * 分散型データ処理エンジン
+   *Droonga*の
+ * 組み込みプラグインの1つ
+   *Groongaプラグイン*
+   * 使い方
+ * Groonga v.s. Droonga
 
-# 今日の話
+# 今日話さないこと
 
- * 話すこと
-   * 分散型データ処理エンジン
-     *Droonga*の
-   * 組み込みプラグインの1つ
-     *Groongaプラグイン*
- * 話さないこと
-   * Droongaの*設計*のこととか
+ * Droongaの*設計*のこと
 
 
 # Part1
@@ -59,7 +56,7 @@ theme
 
 # 大まかに言って
 
- * 全く新しい*汎用の*分散型
+ * *全く新しい・汎用の*分散型
    データ処理エンジンとして
    * 「こういう*設計*でこう動きます」
    * 「こういう事も
@@ -70,16 +67,16 @@ theme
 # なんで？
 
  * どっちかというと*フレームワーク*
- * *プリミティブすぎ*て
-   実用までが遠い
  * *具体的な用途*を先に
    決めないと話が始まらない
+ * 全文検索をやりたいだけでも
+   やり方が*Groongaとは全く違う*
 
 # ハードル高すぎ
 
 ![](images/parts.jpg){:relative_height="95"}
 
-# しかも
+# 使うとしても
 
  * 設計を*熟知*した人が
  * 用途ごとの*最適な構成*を考え
@@ -88,7 +85,7 @@ theme
  * 丁寧な*手作業*でひとつひとつ
    セットアップ＆設定
 
-# 職人芸
+# 職人芸の世界
 
 ![](images/syokunin.jpg){:relative_height="95"}
 
@@ -105,11 +102,11 @@ theme
 
 ![](images/development-policy-before.png){:relative_height="95"}
 
-# 具体的な物の方を目標に
+# 進め方を見直し
 
 ![](images/development-policy-after.png){:relative_height="95"}
 
-# 目標設定の前後で
+# どう変わった？
 
  * 変わらないこと
    * 最終的に作る*物*
@@ -119,27 +116,43 @@ theme
 
 # ここまでの成果(1)
 
- * *Groongaとの互換性*を向上
+ * *Groongaとの互換性*向上
  * *簡単インストール＆
-   セットアップ*を実現
- * ユーティリティの整備により
-   *簡単クラスタ管理*を実現
+   セットアップ*
+ * 管理コマンドによる
+   *簡単クラスタ管理*
+
+# すぐ使える
+
+    $ curl "http://...engine.../install.sh" | \
+             sudo bash
+    $ curl "http://...http-server.../install.sh" | \
+             sudo bash
+    $ service droonga-engine start
+    $ service droonga-http-server start
+
+    $ droonga-engine-join --host=node1 \
+                          --replica-soruce-host=node0
+    $ droonga-engine-join --host=node2 \
+                          --replica-soruce-host=node0
+
+    $ curl "http://hostname:10041/d/select?..."
 
 # ここまでの成果(2)
 
- * *オーケストレーション*導入
+ * *オーケストレーション*
    （based on Serf）
    * 一部のノードが死んでも
      クラスタとして動作し続ける
- * 検索処理の最適化
  * *チュートリアル*の充実
 
 # 結果
 
-*レプリケーション
-できるGroonga*
+*レプリケーションできるGroonga*
+
 としてそこそこ
-形になってきた
+使えるようになってきたはず
+
 
 
 # Part2
@@ -232,13 +245,16 @@ Groonga v.s. Droonga
    *レプリケーションできる
    Groonga*として使える
 
+# 質問？
+
+質問？
 
 
+# Part3
 
-# 試してみよう
-
+-Part3-
 Droongaを
-試してみよう
+*試してみよう*
 
 # 試してみよう
 
